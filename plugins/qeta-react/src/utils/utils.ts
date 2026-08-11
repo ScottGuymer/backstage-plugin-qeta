@@ -5,9 +5,12 @@ import {
   stringifyEntityRef,
 } from '@backstage/catalog-model';
 import { Filters } from '../components/FilterPanel/FilterPanel';
-import { fileTypeFromBuffer } from 'file-type';
 import { ErrorApi } from '@backstage/core-plugin-api';
-import { Post, QetaApi } from '@drodil/backstage-plugin-qeta-common';
+import {
+  detectFileType,
+  Post,
+  QetaApi,
+} from '@drodil/backstage-plugin-qeta-common';
 import { useEffect } from 'react';
 import { useTranslationRef } from '@backstage/core-plugin-api/alpha';
 import { qetaTranslationRef } from '../translation.ts';
@@ -24,7 +27,7 @@ export const imageUpload = (opts: {
     opts;
   // eslint-disable-next-line func-names
   return async function* (data: ArrayBuffer) {
-    const fileType = await fileTypeFromBuffer(data);
+    const fileType = await detectFileType(data);
 
     const mimeType = fileType ? fileType.mime : 'text/plain';
     const attachment = await qetaApi.postAttachment(

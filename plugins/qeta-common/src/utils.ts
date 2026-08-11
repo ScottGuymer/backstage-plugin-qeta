@@ -20,6 +20,18 @@ export const truncate = (str: string, n: number): string => {
   return str.length > n ? `${str.slice(0, n - 1)}...` : str;
 };
 
+export type DetectedFileType = {
+  ext: string;
+  mime: string;
+};
+
+export const detectFileType = async (
+  data: ArrayBuffer | Uint8Array,
+): Promise<DetectedFileType | undefined> => {
+  const { fileTypeFromBuffer } = await import('file-type');
+  return fileTypeFromBuffer(data);
+};
+
 /**
  * @deprecated use `findEntityMentions` instead
  */

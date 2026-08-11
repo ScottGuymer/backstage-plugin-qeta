@@ -11,6 +11,11 @@ import { Entity } from '@backstage/catalog-model';
 import { QetaApi } from '@drodil/backstage-plugin-qeta-common';
 import { ErrorApi } from '@backstage/core-plugin-api';
 
+jest.mock('@drodil/backstage-plugin-qeta-common', () => ({
+  ...jest.requireActual('@drodil/backstage-plugin-qeta-common'),
+  detectFileType: jest.fn().mockResolvedValue(undefined),
+}));
+
 describe('formatDate', () => {
   it('should format the date to YYYY-MM-DD format', () => {
     const date = new Date(2024, 4, 30); // Month is zero index
