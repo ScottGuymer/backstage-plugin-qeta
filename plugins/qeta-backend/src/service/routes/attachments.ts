@@ -6,7 +6,7 @@ import DatabaseStoreEngine from '../upload/database';
 import S3StoreEngine from '../upload/s3';
 import AzureBlobStorageEngine from '../upload/azureBlobStorage';
 import fs from 'fs';
-import FileType from 'file-type';
+import { fileTypeFromBuffer } from 'file-type';
 import { File, RouteOptions } from '../types';
 import {
   AttachmentStorageEngine,
@@ -76,7 +76,7 @@ export const attachmentsRoutes = (router: Router, options: RouteOptions) => {
 
       const fileRequest = files.image[0];
       const fileBuffer = await fs.promises.readFile(`${fileRequest?.path}`);
-      const mimeType = await FileType.fromBuffer(fileBuffer);
+      const mimeType = await fileTypeFromBuffer(new Uint8Array(fileBuffer));
 
       if (!mimeType || !supportedFilesTypes.includes(mimeType.mime)) {
         response.status(400).json({
